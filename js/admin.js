@@ -6,7 +6,7 @@ auth.onAuthStateChanged(user => {
   }
 
   // Simple admin check (email-based)
-  if (user.email !== "ADMIN_EMAIL_HERE") {
+  if (user.email !== "admin@luckynest.com") {
     alert("Access denied");
     window.location.href = "dashboard.html";
     return;
