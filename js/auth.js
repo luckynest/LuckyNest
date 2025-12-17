@@ -1,40 +1,47 @@
-/************************************************
- * LuckyNest - Firebase Auth Logic
- * Author: LuckyNest Project
- ************************************************/
-
-/* ========= FIREBASE CONFIG ========= */
-/* REPLACE the values below with your Firebase keys */
 const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY_HERE",
-  authDomain: "PASTE_YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "PASTE_YOUR_PROJECT_ID",
-  storageBucket: "PASTE_YOUR_PROJECT_ID.appspot.com",
+  apiKey: "PASTE_API_KEY",
+  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
+  projectId: "PASTE_PROJECT_ID",
+  storageBucket: "PASTE_PROJECT_ID.appspot.com",
   messagingSenderId: "PASTE_SENDER_ID",
   appId: "PASTE_APP_ID"
 };
 
-/* ========= INITIALIZE FIREBASE ========= */
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-/* ========= REGISTER USER ========= */
 function registerUser() {
-  const email = document.getElementById("registerEmail").value;
-  const password = document.getElementById("registerPassword").value;
-
-  if (!email || !password) {
-    alert("Please fill in all fields");
-    return;
-  }
+  const email = registerEmail.value;
+  const password = registerPassword.value;
 
   auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
+    .then(user => {
+      return db.collection("users").doc(user.user.uid).set({
+        email: email,
+        prizes: []
+      });
+    })
+    .then(() => window.location.href = "dashboard.html")
+    .catch(err => alert(err.message));
+}
 
-      return db.collection("users").doc(user.uid).set({
+function loginUser() {
+  auth.signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
+    .then(() => window.location.href = "dashboard.html")
+    .catch(err => alert(err.message));
+}
+
+function logoutUser() {
+  auth.signOut().then(() => window.location.href = "login.html");
+}
+
+auth.onAuthStateChanged(user => {
+  if (!user && location.pathname.includes("dashboard")) {
+    window.location.href = "login.html";
+  }
+});      return db.collection("users").doc(user.uid).set({
         email: email,
         role: "user",
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
