@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – LuckyNest</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="header">
+    <h1>🎡 LuckyNest Dashboard</h1>
+    <button onclick="logoutUser()">Logout</button>
+  </header>
+
+  <section class="wheel-section">
+    <div id="wheel">🎁</div>
+    <button onclick="spinWheel()">Spin Wheel</button>
+    <p id="result"></p>
+  </section>
+
+  <section class="prizes">
+    <h3>Your Prizes</h3>
+    <ul id="prizeList"></ul>
+  </section>
+
+  <script src="js/auth.js"></script>
+  <script src="js/spin.js"></script>
+</body>
+</html>
